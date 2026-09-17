@@ -14,6 +14,9 @@
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif}
 button:focus-visible,.opt:focus-within,input:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .wrap{max-width:780px;margin:0 auto;padding:20px 16px 80px}
+.brand{display:flex;align-items:center;gap:9px;margin-bottom:14px}
+.brand .mark{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:8px;background:var(--acc);color:#fff;font-weight:800;font-size:12px;letter-spacing:.02em}
+.brand .brandname{font-weight:800;font-size:14px;letter-spacing:.08em;color:var(--acc)}
 header{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:18px}
 h1{font-size:22px;margin:0;letter-spacing:-.3px;text-wrap:balance}
 h1 small{display:block;font-size:13px;color:var(--sub);font-weight:500}
@@ -65,7 +68,7 @@ u{text-decoration-thickness:1.5px;text-underline-offset:3px}
 .pick .lab{font-weight:600;min-width:34px}
 .pick .opt{padding:7px 12px}
 .mark{font-weight:800;margin-left:6px}.mark.o{color:var(--ok)}.mark.x{color:var(--ng)}
-.ex{margin-top:10px;font-size:14px;padding:10px 12px;border-left:3px solid var(--acc);background:var(--acc2);border-radius:0 8px 8px 0}
+.ex{white-space:pre-line;margin-top:10px;font-size:14px;padding:10px 12px;border-left:3px solid var(--acc);background:var(--acc2);border-radius:0 8px 8px 0}
 .banner{text-align:center;padding:24px 16px}
 .banner .big{font-size:40px;font-weight:800;letter-spacing:2px}
 .banner.pass{background:var(--okbg);border-color:var(--ok)}.banner.pass .big{color:var(--ok)}
@@ -108,6 +111,7 @@ select{font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius
 </head>
 <body>
 <div class="wrap">
+<div class="brand" aria-label="이승수영어전문학원"><span class="mark">SS</span><span class="brandname">이승수영어전문학원</span></div>
 <header><h1 id="appTitle"><small id="appSub"></small></h1><span class="muted" id="who"></span></header>
 
 <section id="home">
@@ -190,7 +194,8 @@ const pad = n => String(n).padStart(2, '0');
 const fmtTime = d => `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 const fmtDur = sec => { const m = Math.round(sec / 60); return m < 1 ? '1분 미만' : m < 60 ? `${m}분` : `${Math.floor(m / 60)}시간 ${m % 60}분`; };
 const cleanName = s => s.replace(/\s+/g, ' ').trim();
-const normAns = s => String(s).toLowerCase().replace(/[’‘]/g, "'").replace(/\s+/g, ' ').replace(/^[\s.]+|[\s.]+$/g, '');
+// 단답 비교: 대소문자·공백·구두점·괄호를 무시한다 ("(B), (D), (H)" = "B D H", "can't" = "cant")
+const normAns = s => String(s).toLowerCase().replace(/[^a-z0-9가-힣]/g, '');
 const typeKo = it => D.typeKo[it.t] || it.t;
 
 // ---- 선택 범위 라벨 (인증에 들어가므로 순서·표기가 고정되어야 한다) ----
